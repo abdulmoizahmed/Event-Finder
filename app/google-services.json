@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "273546968537",
+    "firebase_url": "https://jamatfinder.firebaseio.com",
+    "project_id": "jamatfinder",
+    "storage_bucket": "jamatfinder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273546968537:android:31d2129642fabda9",
+        "android_client_info": {
+          "package_name": "com.appswallet.jamatfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273546968537-m17irc9bjtc040qrsbn9rpatgc32hkdm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appswallet.jamatfinder",
+            "certificate_hash": "0E041D190EC77D2AD04EE2AC26CCDAF9C5EC0425"
+          }
+        },
+        {
+          "client_id": "273546968537-kekn1q95u1rvkm2m9cdlllltteauuef2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGh14x9TNerdMCiesK0H4r6gmj2gn-dbQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273546968537-kekn1q95u1rvkm2m9cdlllltteauuef2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
