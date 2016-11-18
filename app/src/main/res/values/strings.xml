@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">JamatFinder</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">Jamat Finder</string>
+    <string name="spinner_title">Select Jamat</string>
+    <string name="service_not_available">Service not Available</string>
+    <string name="no_address_found">No Address found</string>
+    <string name="address_found">Address is Found</string>
+    <string name="titleA">Add Masjid</string>
+    <string name="titleB">Add Masjid</string>
+    <string name="enter_masjid">Masjid Name</string>
+
+
+    <string-array name="jamat">
+        <item>Fajar</item>
+        <item>Zuhar</item>
+        <item>Asar</item>
+        <item>Magrib</item>
+        <item>Isha</item>
+    </string-array>
 </resources>
