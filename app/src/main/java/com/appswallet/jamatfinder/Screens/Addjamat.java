@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.appswallet.jamatfinder.FireBase.EventModel;
 import com.appswallet.jamatfinder.FireBase.FirebaseReferences;
 import com.appswallet.jamatfinder.FireBase.MasjidModel;
@@ -86,6 +88,7 @@ public class Addjamat extends AppCompatActivity implements OnMapReadyCallback, L
 
         jamatButton = (Button) findViewById(R.id.jamat_btn);
         jamatName = (Spinner) findViewById(R.id.spinner);
+        jamatName.setPrompt("Select Namaz");
         now = java.util.Calendar.getInstance();
         time_tv = (TextView) findViewById(R.id.time_id);
         location_tv = (TextView) findViewById(R.id.location_address);
@@ -168,8 +171,9 @@ public class Addjamat extends AppCompatActivity implements OnMapReadyCallback, L
         masjid.setMasjidName(masjidName);
         masjid.setLatitude(location.getLatitude());
         masjid.setLongitude(location.getLongitude());
+        masjid.setMasjidlocationName(location_tv.getText().toString());
 
-        if (fajarTime == null || zuharTime == null || asarTime == null || magribTime == null || ishaTime == null || masjidName == null) {
+        if (fajarTime == null || zuharTime == null || asarTime == null || magribTime == null || ishaTime == null || masjidName.toString().equals("")) {
             Toast.makeText(getApplicationContext(),"Fields are empty",Toast.LENGTH_SHORT).show();
         }
         else
@@ -191,13 +195,29 @@ public class Addjamat extends AppCompatActivity implements OnMapReadyCallback, L
         if (location_tv.getText().toString().equals("") || time == null || location == null) {
             Toast.makeText(getApplicationContext(), "Fields are empty", Toast.LENGTH_LONG).show();
         } else {
-            jamatRef.push().setValue(jamat);
-            Toast.makeText(getApplicationContext(), "Jamat Created", Toast.LENGTH_LONG).show();
+            String key = jamatRef.push().getKey();
+            jamatRef.child(key).setValue(jamat);
+
+
+            //startCountDown(key);
             finish();
+           // createSuccessDialog();
         }
 
 
     }
+
+    private void createSuccessDialog() {
+
+            MaterialDialog dialog = new MaterialDialog.Builder(this)
+                    .title("Jamat ")
+                    .content("Jamat is created Successfully " +
+                            "Note : This Jamat will remove from map after 15 min")
+                    .show();
+
+    }
+
+
 
 
     @Override
@@ -217,9 +237,11 @@ public class Addjamat extends AppCompatActivity implements OnMapReadyCallback, L
             @Override
             public void onCameraMove() {
                 LatLng centre =  map.getCameraPosition().target;
-                location.setLatitude(centre.latitude);
-                location.setLongitude(centre.longitude);
-                startIntentService();
+                if(centre != null) {
+                    location.setLatitude(centre.latitude);
+                    location.setLongitude(centre.longitude);
+                    startIntentService();
+                }
             }
         });
 
@@ -281,6 +303,7 @@ public class Addjamat extends AppCompatActivity implements OnMapReadyCallback, L
 
             if (resultCode == Const.SUCCESS_RESULT) {
                 mAddressOutput = resultData.getString(Const.RESULT_DATA_KEY);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

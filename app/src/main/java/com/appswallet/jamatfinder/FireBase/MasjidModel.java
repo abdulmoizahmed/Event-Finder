@@ -15,6 +15,18 @@ public class MasjidModel {
     private String ishaTime;
     private double latitude;
     private double longitude;
+    private transient String masjidID;
+
+
+
+    public String getMasjidID() {
+        return masjidID;
+    }
+
+    public void setMasjidID(String masjidID) {
+        this.masjidID = masjidID;
+    }
+
 
 
     public String getMasjidName() {

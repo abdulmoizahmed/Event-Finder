@@ -10,6 +10,15 @@ public class EventModel {
         private String eventTime;
         private double latitude;
         private double longitude;
+        private transient String jamatID;
+
+    public String getJamatID() {
+        return jamatID;
+    }
+
+    public void setJamatID(String jamatID) {
+        this.jamatID = jamatID;
+    }
 
     public double getLatitude() {
         return latitude;

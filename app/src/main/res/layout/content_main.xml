@@ -3,13 +3,37 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:focusableInTouchMode="true"
+        android:weightSum="5"
+        >
 
+
+    <EditText
+        android:id="@+id/search_box"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:hint="Search Location"
+        android:layout_weight="4"
+
+        />
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="searchMasjid"
+            android:src="@android:drawable/ic_menu_search"
+            />
+
+    </LinearLayout>
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
        <include layout="@layout/fragment_map"/>
-
         </FrameLayout>
 
 

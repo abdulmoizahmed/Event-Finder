@@ -29,6 +29,7 @@ public class MyLocation {
 
 
     public Location getLocation() {
+
         return location;
     }
 
