@@ -1,14 +1,14 @@
-package com.appswallet.jamatfinder.network.Bals;
+package com.appswallet.jamatfinder.firebase_push_notification.network.Bals;
 
 import android.content.Context;
 import android.widget.Toast;
-import com.appswallet.jamatfinder.models.PushData;
-import com.appswallet.jamatfinder.models.PushResponse;
+import com.appswallet.jamatfinder.firebase_push_notification.models.PushData;
+import com.appswallet.jamatfinder.firebase_push_notification.models.PushResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.appswallet.jamatfinder.network.RestClient.getAdapter;
+import static com.appswallet.jamatfinder.firebase_push_notification.network.RestClient.getAdapter;
 
 /**
  * Created by Maaz on 11/23/2016.

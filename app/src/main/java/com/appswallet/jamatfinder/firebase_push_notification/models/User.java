@@ -1,4 +1,4 @@
-package com.appswallet.jamatfinder.models;
+package com.appswallet.jamatfinder.firebase_push_notification.models;
 
 import java.io.Serializable;
 

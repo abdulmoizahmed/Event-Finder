@@ -1,4 +1,4 @@
-package com.appswallet.jamatfinder.models;
+package com.appswallet.jamatfinder.firebase_push_notification.models;
 
 /**
  * Created by Maaz on 11/22/2016.

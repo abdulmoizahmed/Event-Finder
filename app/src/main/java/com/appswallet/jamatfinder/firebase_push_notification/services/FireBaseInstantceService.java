@@ -1,6 +1,5 @@
-package com.appswallet.jamatfinder.firebase_services;
+package com.appswallet.jamatfinder.firebase_push_notification.services;
 
-import com.appswallet.jamatfinder.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;

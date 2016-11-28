@@ -1,4 +1,4 @@
-package com.appswallet.jamatfinder.screens;
+package com.appswallet.jamatfinder.firebase_push_notification.screens;
 
 import android.content.Intent;
 import android.os.Bundle;

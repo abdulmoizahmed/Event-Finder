@@ -1,21 +1,18 @@
 package com.appswallet.jamatfinder;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.appswallet.jamatfinder.models.Data;
-import com.appswallet.jamatfinder.models.PushData;
-import com.appswallet.jamatfinder.models.User;
-import com.appswallet.jamatfinder.network.Bals.SendPush;
-import com.appswallet.jamatfinder.screens.LogInScreen;
-import com.appswallet.jamatfinder.utils.FirebaseReferences;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.appswallet.jamatfinder.firebase_push_notification.main.MainCallin;
+import com.appswallet.jamatfinder.firebase_push_notification.models.Data;
+import com.appswallet.jamatfinder.firebase_push_notification.models.PushData;
+import com.appswallet.jamatfinder.firebase_push_notification.models.User;
+import com.appswallet.jamatfinder.firebase_push_notification.network.Bals.SendPush;
+import com.appswallet.jamatfinder.firebase_push_notification.screens.LogInScreen;
+import com.appswallet.jamatfinder.firebase_push_notification.utils.FirebaseReferences;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 
@@ -47,10 +44,13 @@ public class MainActivity extends AppCompatActivity {
         getUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getUsers_from_fbDatabase();
+//                getUsers_from_fbDatabase();
+                MainCallin.getAndNotifyUser(getApplicationContext());
             }
         });
     }
+
+/*-------------------- Methods for getting users and notify them --------------------------------------*/
 
     private void getUsers_from_fbDatabase() {
 
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
                 for (DataSnapshot mdata : dataSnapshot.getChildren()) {
                     User fbUser = mdata.getValue(User.class);
-//                    userRefTokensList.add(fbUser.getUserRefreshToken());
                     String token = fbUser.getUserRefreshToken();
                     pushTheUser(token);
                     Toast.makeText(MainActivity.this, "User Tokens ", Toast.LENGTH_SHORT).show();
@@ -89,4 +88,6 @@ public class MainActivity extends AppCompatActivity {
 //            SendPush.sendPushesToFbUsers(pushData,getApplicationContext());
 //        }
 //    }
+
+    /*-------------------- End of Methods for getting users and notify them --------------------------------------*/
 }

@@ -1,4 +1,4 @@
-package com.appswallet.jamatfinder.screens;
+package com.appswallet.jamatfinder.firebase_push_notification.screens;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.*;
 import com.appswallet.jamatfinder.MainActivity;
 import com.appswallet.jamatfinder.R;
-import com.appswallet.jamatfinder.models.User;
+import com.appswallet.jamatfinder.firebase_push_notification.models.User;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

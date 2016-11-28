@@ -1,4 +1,4 @@
-package com.appswallet.jamatfinder.network;
+package com.appswallet.jamatfinder.firebase_push_notification.network;
 
 /**
  * Created by Maaz on 11/22/2016.

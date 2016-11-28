@@ -15,7 +15,7 @@
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".screens.LogInScreen"
+        <activity android:name=".firebase_push_notification.screens.LogInScreen"
                   android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -24,12 +24,12 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".screens.SignupScreen"
+                android:name=".firebase_push_notification.screens.SignupScreen"
                 android:label="@string/title_activity_signup"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-                android:name=".screens.ResetPasswordScreen"
+                android:name=".firebase_push_notification.screens.ResetPasswordScreen"
                 android:label="@string/title_activity_reset_password"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
@@ -39,7 +39,7 @@
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <service android:name=".firebase_services.FirebaseMessageService">
+        <service android:name=".firebase_push_notification.services.FirebaseMessageService">
              <intent-filter>
                  <action android:name="com.google.firebase.MESSAGING_EVENT"/>
              </intent-filter>

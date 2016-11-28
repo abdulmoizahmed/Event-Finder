@@ -1,4 +1,4 @@
-package com.appswallet.jamatfinder.firebase_services;
+package com.appswallet.jamatfinder.firebase_push_notification.services;
 
 import android.app.Dialog;
 import android.app.NotificationManager;
