@@ -17,7 +17,7 @@ public class MainCallin {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference userRef = database.getReference(FirebaseReferences.userRef);
 
-    public static void getAndNotifyUser(final Context mContext){
+    public static void getAndNotifyUser(final Context mContext, final String message){
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -25,10 +25,9 @@ public class MainCallin {
 
                 for (DataSnapshot mdata : dataSnapshot.getChildren()) {
                     User fbUser = mdata.getValue(User.class);
-//                    userRefTokensList.add(fbUser.getUserRefreshToken());
                     String token = fbUser.getUserRefreshToken();
-                    pushTheUser(token,mContext);
-                    Toast.makeText(mContext, "User Tokens ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "User Tokens: "+token, Toast.LENGTH_SHORT).show();
+                    pushTheUser(token,mContext,message);
                 }
             }
 
@@ -39,8 +38,8 @@ public class MainCallin {
         });
     }
 
-    private static void pushTheUser(String userRegToken, Context mContext) {
-        Data data = new Data("First message to all users");
+    private static void pushTheUser(String userRegToken, Context mContext,String message) {
+        Data data = new Data(message);
         PushData pushData = new PushData(data,userRegToken );
         SendPush.sendPushesToFbUsers(pushData, mContext);
     }
