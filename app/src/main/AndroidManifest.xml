@@ -11,6 +11,13 @@
 
 
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -40,6 +47,28 @@
 
 
         <activity android:name=".Screens.Addjamat"></activity>
+        <activity
+                android:name=".firebase_push_notification.screens.SignupScreen"
+                android:label="@string/title_activity_signup"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+                android:name=".firebase_push_notification.screens.ResetPasswordScreen"
+                android:label="@string/title_activity_reset_password"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+                android:name=".MainActivity"
+                android:label="@string/title_activity_profile_screen"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <service android:name=".firebase_push_notification.services.FirebaseMessageService">
+             <intent-filter>
+                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+             </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
