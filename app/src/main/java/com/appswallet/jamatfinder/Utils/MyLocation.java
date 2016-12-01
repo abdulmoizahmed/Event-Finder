@@ -2,6 +2,8 @@ package com.appswallet.jamatfinder.Utils;
 
 import android.location.Location;
 
+import com.appswallet.jamatfinder.Network.EndNodes;
+
 /**
  * Created by android on 11/17/16.
  */
@@ -22,8 +24,6 @@ public class MyLocation {
         {
             instance = new MyLocation();
         }
-
-
         return instance;
     }
 
@@ -42,6 +42,7 @@ public class MyLocation {
     }
 
     public void setAccessPermission(boolean accessPermission) {
+
         this.accessPermission = accessPermission;
     }
 }

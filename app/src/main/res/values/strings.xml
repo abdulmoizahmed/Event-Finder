@@ -52,5 +52,5 @@
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.
     </string>
     <string name="title_activity_log_in_screen">LogInScreen</string>
-    <string name="title_activity_profile_screen">ProfileScreen</string>
+    <string name="title_activity_profile_screen">Jamat Finder</string>
 </resources>

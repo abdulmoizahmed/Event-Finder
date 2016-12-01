@@ -10,8 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import com.appswallet.jamatfinder.MainActivity;
+
 import com.appswallet.jamatfinder.R;
+import com.appswallet.jamatfinder.Screens.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -102,7 +103,7 @@ public class SignupScreen extends AppCompatActivity {
                                     Toast.makeText(SignupScreen.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    startActivity(new Intent(SignupScreen.this, MainActivity.class));
+                                    startActivity(new Intent(SignupScreen.this, LogInScreen.class));
                                     finish();
                                 }
                             }

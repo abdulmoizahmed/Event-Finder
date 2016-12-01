@@ -8,8 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.*;
-import com.appswallet.jamatfinder.MainActivity;
+
 import com.appswallet.jamatfinder.R;
+import com.appswallet.jamatfinder.Screens.MainActivity;
 import com.appswallet.jamatfinder.firebase_push_notification.models.User;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -265,7 +266,7 @@ public class LogInScreen extends AppCompatActivity implements GoogleApiClient.On
                                     Toast.makeText(LogInScreen.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                 }
                             } else {
-                                Intent intent = new Intent(LogInScreen.this, MainActivity.class);
+                                Intent intent = new Intent(LogInScreen.this,MainActivity.class);
                                 sendUserObjectToFb();
                                 startActivity(intent);
                                 finish();

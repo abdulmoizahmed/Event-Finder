@@ -1,8 +1,10 @@
 package com.appswallet.jamatfinder.Screens;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.text.TimeZoneFormat;
@@ -36,8 +38,14 @@ import com.appswallet.jamatfinder.FireBase.EventModel;
 import com.appswallet.jamatfinder.FireBase.FirebaseReferences;
 import com.appswallet.jamatfinder.FireBase.MasjidModel;
 import com.appswallet.jamatfinder.R;
+import com.appswallet.jamatfinder.Utils.AlarmReceiver;
+import com.appswallet.jamatfinder.Utils.AlarmService;
+import com.appswallet.jamatfinder.Utils.CommonUtils;
 import com.appswallet.jamatfinder.Utils.Const;
+import com.appswallet.jamatfinder.Utils.DevicePrefernces;
+import com.appswallet.jamatfinder.Utils.JamatReceiver;
 import com.appswallet.jamatfinder.Utils.MyLocation;
+import com.appswallet.jamatfinder.Utils.PrayTime;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -60,18 +68,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 import static com.appswallet.jamatfinder.R.id.edit_btn;
+import static com.appswallet.jamatfinder.R.id.location_address;
 import static com.appswallet.jamatfinder.R.id.map;
 import static com.appswallet.jamatfinder.R.id.time;
 import static com.google.android.gms.location.LocationRequest.create;
@@ -90,10 +102,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationRequest request;
     private Location mLocation;
     private EditText searchbox;
+
+    private PendingIntent pendingIntent;
+    private AlarmManager manager;
+
     boolean isEventObject = false;
     boolean isSearchFound = false;
     String time;
     private String content;
+    Bundle bundle;
 
     int toogle = 0;
     private String localTime;
@@ -118,9 +135,72 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         initView();
         startListener();
         startTimer();
+        //setAlarm();
+        try {
+            setjamatAlarm();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
     }
+
+
+    private void setjamatAlarm() throws ParseException {
+        Intent alarmIntent = new Intent(this,JamatReceiver.class);
+        alarmIntent.putExtra("namaz",true);
+        pendingIntent =  PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+        //CommonUtils.getInstance().getTimes().getFajr()
+
+        AlarmManagerCall("5:30 PM");
+        AlarmManagerCall("5:31 PM");
+
+
+
+    }
+
+    private void AlarmManagerCall(String time) throws ParseException {
+        Calendar calender = convertStringtoCalenderObject(time);
+        manager = (AlarmManager)getSystemService(getApplicationContext().ALARM_SERVICE);
+        manager.set(AlarmManager.RTC_WAKEUP,calender.getTimeInMillis(),pendingIntent);
+
+    }
+
+
+    private void setAlarm() {
+
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        alarmIntent.putExtra("namaz",false);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+        manager = (AlarmManager)getSystemService(getApplicationContext().ALARM_SERVICE);
+        int interval = 10000;
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private Calendar convertStringtoCalenderObject(String time) throws ParseException {
+        String[] space =time.split("\\s+");
+        String hour = space[0];
+        String am_pm = space[1];
+        String[] h = hour.split(":");
+        int hr = Integer.parseInt(h[0]);
+        int mins = Integer.parseInt(h[1]);
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY,hr);
+        calendar.set(Calendar.MINUTE, mins);
+        if(am_pm == "PM")
+        {
+            calendar.set(Calendar.AM_PM,Calendar.PM);
+        }
+        else {
+            calendar.set(Calendar.AM_PM,Calendar.AM);
+        }
+        return calendar;
+    }
+
 
     private void startTimer() {
         Timer timer = new Timer();
@@ -169,18 +249,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initView() {
+        DevicePrefernces.getInstance().init(getApplicationContext());
         actionButton = (FloatingActionButton) findViewById(R.id.fab);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(map);
         searchbox = (EditText) findViewById(R.id.search_box);
         mapFragment.getMapAsync(this);
         jamatlist = new ArrayList<EventModel>();
         masjidlist = new ArrayList<MasjidModel>();
+        bundle = getIntent().getExtras();
+
+
+        DevicePrefernces.getInstance().retrieveLocation();
+        if(MyLocation.getInstance().getLocation() != null)
+        {
+            mLocation = MyLocation.getInstance().getLocation();
+        }
+        CommonUtils.getInstance().fetchNamazTime();
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -193,6 +283,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.setOnMarkerClickListener(this);
 
 
+        }
+        if(bundle != null) {
+            double tLatitude =  bundle.getDouble("latitude");
+            double tLongitude =  bundle.getDouble("longitude");
+            moveMapCamera(tLatitude,tLongitude);
         }
 
 
@@ -335,13 +430,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, request, this);
         mLocation = LocationServices.FusedLocationApi.getLastLocation(apiClient);
-        MyLocation.getInstance().setLocation(mLocation);
+
         if (mLocation != null) {
+            MyLocation.getInstance().setLocation(mLocation);
+
+            DevicePrefernces.getInstance().saveLocation();
             addMarker();
-            moveMapCamera(mLocation.getLatitude(),mLocation.getLongitude());
+
+
+            if(bundle != null) {
+
+                double tLatitude = (double) bundle.get("latitude");
+                double tLongitude = (double) bundle.get("longitude");
+                moveMapCamera(tLatitude,tLongitude);
+
+            }
+            else{
+                moveMapCamera(mLocation.getLatitude(), mLocation.getLongitude());
+            }
         }
 
     }
+
+
 
     private void addMarker() {
         LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
@@ -472,16 +583,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
-        for(EventModel list: jamatlist)
-        {
-            if(list.getEventlocationName().toLowerCase().contains(search))
-            {
-                isSearchFound = true;
-                Toast.makeText(getApplicationContext(), "Found", Toast.LENGTH_SHORT).show();
-                moveMapCamera(list.getLatitude(),list.getLongitude());
-
-            }
-        }
+//        for(EventModel list: jamatlist)
+//        {
+//            if(list.getEventlocationName().toLowerCase().contains(search))
+//            {
+//                isSearchFound = true;
+//                Toast.makeText(getApplicationContext(), "Found", Toast.LENGTH_SHORT).show();
+//                moveMapCamera(list.getLatitude(),list.getLongitude());
+//
+//            }
+//        }
         if(isSearchFound == false)
         {
             Toast.makeText(getApplicationContext(), "Search not found", Toast.LENGTH_SHORT).show();

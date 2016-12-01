@@ -20,7 +20,8 @@ public class RestClient {
 
     }
 
-    static{
+    static
+    {
 
         setupRestClient();
     }

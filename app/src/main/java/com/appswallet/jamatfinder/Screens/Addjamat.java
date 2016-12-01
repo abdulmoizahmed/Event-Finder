@@ -30,8 +30,10 @@ import com.appswallet.jamatfinder.FireBase.FirebaseReferences;
 import com.appswallet.jamatfinder.FireBase.MasjidModel;
 import com.appswallet.jamatfinder.Network.FetchAddressIntentService;
 import com.appswallet.jamatfinder.R;
+import com.appswallet.jamatfinder.Utils.CommonUtils;
 import com.appswallet.jamatfinder.Utils.Const;
 import com.appswallet.jamatfinder.Utils.MyLocation;
+import com.appswallet.jamatfinder.firebase_push_notification.main.MainCallin;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -79,8 +81,10 @@ public class Addjamat extends AppCompatActivity implements OnMapReadyCallback, L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addjamat);
+
         initView();
         startListener();
+
     }
 
 
@@ -179,6 +183,7 @@ public class Addjamat extends AppCompatActivity implements OnMapReadyCallback, L
         else
         {
             masjidRef.push().setValue(masjid);
+            MainCallin.getAndNotifyUser(getApplicationContext(),masjidName,location.getLatitude(),location.getLongitude());
             finish();
         }
 
@@ -197,7 +202,6 @@ public class Addjamat extends AppCompatActivity implements OnMapReadyCallback, L
         } else {
             String key = jamatRef.push().getKey();
             jamatRef.child(key).setValue(jamat);
-
 
             //startCountDown(key);
             finish();
@@ -283,7 +287,8 @@ public class Addjamat extends AppCompatActivity implements OnMapReadyCallback, L
     }
 
     @Override
-    public void passTime(String fajar, String zuhar, String asar, String magrib, String isha,String masjidName) {
+    public void passTime(String fajar, String zuhar, String asar, String magrib, String isha,String masjidName)
+    {
         fajarTime = fajar;
         zuharTime = zuhar;
         asarTime = asar;

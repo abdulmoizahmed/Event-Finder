@@ -17,7 +17,8 @@ public class MainCallin {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference userRef = database.getReference(FirebaseReferences.userRef);
 
-    public static void getAndNotifyUser(final Context mContext, final String message){
+
+    public static void getAndNotifyUser(final Context mContext, final String message, final double latitude, final double longitude){
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -27,7 +28,7 @@ public class MainCallin {
                     User fbUser = mdata.getValue(User.class);
                     String token = fbUser.getUserRefreshToken();
                     Toast.makeText(mContext, "User Tokens: "+token, Toast.LENGTH_SHORT).show();
-                    pushTheUser(token,mContext,message);
+                    pushTheUser(token,mContext,message,latitude,longitude);
                 }
             }
 
@@ -38,8 +39,10 @@ public class MainCallin {
         });
     }
 
-    private static void pushTheUser(String userRegToken, Context mContext,String message) {
+    private static void pushTheUser(String userRegToken, Context mContext, String message, double latitude, double longitude) {
         Data data = new Data(message);
+        data.setLatitude(latitude);
+        data.setLongitude(longitude);
         PushData pushData = new PushData(data,userRegToken );
         SendPush.sendPushesToFbUsers(pushData, mContext);
     }
